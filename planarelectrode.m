@@ -146,7 +146,7 @@ for m=1:length(t)
     grid on
     legend('FT (sp A)','{FT_{red}} (sp B)','{FT_{ox}} (sp C)')
     % Calculation of current repsonse at the electrode surface
-    I(m) = (F*D*(1/dx)*(-CA(2)+CA(1)+CB(2)-CB(1)-CC(2)+CC(1)))*Area; % dimensional current
+    I(m) = (F*D*(1/dx)*(4*(-CA(2)+CA(1))+(2*(-CC(2)+CC(1))))*Area); % dimensional current
     pause(0.01)
      
 end
