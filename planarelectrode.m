@@ -7,8 +7,8 @@ tic
 
 sigma = 5643;               % dimensionless scan rate
 dTheta = 0.194;             % dimensionless potential    
-r1 = 281.15;                % dimensionless rate constant for Step 1
-r2 = 172.46;                % dimensionless rate constant for Step 2
+r1 = 617.39;                % dimensionless rate constant for Step 1
+r2 = 110.01;                % dimensionless rate constant for Step 2
 
 epsilon = 1E-01;           % Electrode radius (cm)
 D = 6.9E-06;               % Diffusivity (cm^2 sec^-1)
@@ -73,10 +73,10 @@ for m=1:length(t)
     
     % coefficient matrix
     %for specie A
-    MatA(1,1) = aE + aP0 + k01*(exp(((-4*alfa1*F)/(R*T))*(E(m)-Ef01)));
+    MatA(1,1) = aE + aP0 + k01*(exp(((-(1+alfa1)*F)/(R*T))*(E(m)-Ef01)));
     MatA(1,2) = -aE;
-    for i = 2:N-1
-    MatA(i,i) = aE + aW + aP0 + k01*(exp(((-4*alfa1*F)/(R*T))*(E(m)-Ef01)))*dx;
+    for i = 2:N-1                                            
+    MatA(i,i) = aE + aW + aP0;
     MatA(i,i-1) = -aW;
     MatA(i,i+1) = -aE;
     end
@@ -107,25 +107,25 @@ for m=1:length(t)
     
     %% source terms (spatial and temporal sources)
     %for specie A
-    SourceA(1) = aP0*CA(1);
+    SourceA(1) = aP0*CA(1); 
     for i = 2:N-1
-        SourceA(i) = aP0*CA(i);
+       SourceA(i) = aP0*CA(i);
     end
     SourceA(N) = aP0*CA(N) + ((2*D*Cba)/dx);
     
     %for specie B
-    SourceB(1) = aP0*CB(1) + CA(1)*k01*exp(-((4*alfa1*F)/(R*T))*(E(m)-Ef01)) + CC(1)*k02*exp(-((2*alfa2*F)/(R*T))*(E(m)-Ef02));
+     SourceB(1) = aP0*CB(1) + CA(1)*k01*exp(-(((1+alfa1)*F)/(R*T))*(E(m)-Ef01)) + CC(1)*k02*exp(-((2*alfa2*F)/(R*T))*(E(m)-Ef02)); 
     for i = 2:N-1
-        SourceB(i) = aP0*CB(i) + CA(i)*dx*k01*exp(-((4*alfa1*F)/(R*T))*(E(m)-Ef01));
+       SourceB(i) = aP0*CB(i);
     end
     SourceB(N) = aP0*CB(N);
     
     %for specie C
-    SourceC(1) = aP0*CC(1) + CB(1)*k02*exp(((2*alfaP2*F)/(R*T))*(E(m)-Ef02));
-    for i = 2:N-1
+     SourceC(1) = aP0*CC(1) + CB(1)*k02*exp(((2*alfaP2*F)/(R*T))*(E(m)-Ef02)); 
+     for i = 2:N-1
         SourceC(i) = aP0*CC(i);
-    end
-    SourceC(N) = aP0*CC(N);
+     end
+     SourceC(N) = aP0*CC(N);
 
     % use matrix inversion to find the concentration of species at current time
     invMA = inv(MatA);
