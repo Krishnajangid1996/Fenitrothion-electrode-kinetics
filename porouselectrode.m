@@ -73,10 +73,10 @@ for m=1:length(t)
     
     % coefficient matrix
     %for specie A
-    MatA(1,1) = aE + aP0 + k01*(exp(((-4*alfa1*F)/(R*T))*(E(m)-Ef01)));
+    MatA(1,1) = aE + aP0 + k01*(exp(((-(1+alfa1)*F)/(R*T))*(E(m)-Ef01)));
     MatA(1,2) = -aE;
     for i = 2:N-1
-    MatA(i,i) = aE + aW + aP0 + k01*(exp(((-4*alfa1*F)/(R*T))*(E(m)-Ef01)))*dx;
+    MatA(i,i) = aE + aW + aP0;
     MatA(i,i-1) = -aW;
     MatA(i,i+1) = -aE;
     end
@@ -114,14 +114,14 @@ for m=1:length(t)
     SourceA(N) = aP0*CA(N);
     
     %for specie B
-    SourceB(1) = aP0*CB(1) + CA(1)*k01*exp(-((4*alfa1*F)/(R*T))*(E(m)-Ef01)) + CC(1)*k02*exp(-((2*alfa2*F)/(R*T))*(E(m)-Ef02)); 
+   SourceB(1) = aP0*CB(1) + CA(1)*k01*exp(-(((1+alfa1)*F)/(R*T))*(E(m)-Ef01)) + CC(1)*k02*exp(-((2*alfa2*F)/(R*T))*(E(m)-Ef02)); 
     for i = 2:N-1
-       SourceB(i) = aP0*CB(i) + CA(i)*dx*k01*exp(-((4*alfa1*F)/(R*T))*(E(m)-Ef01));
+       SourceB(i) = aP0*CB(i);
     end
     SourceB(N) = aP0*CB(N);
      
     %for specie C
-     SourceC(1) = aP0*CC(1) + CB(1)*k02*exp(((2*alfaP2*F)/(R*T))*(E(m)-Ef02)); 
+      SourceC(1) = aP0*CC(1) + CB(1)*k02*exp(((2*alfaP2*F)/(R*T))*(E(m)-Ef02)); 
      for i = 2:N-1
         SourceC(i) = aP0*CC(i);
      end
@@ -145,7 +145,7 @@ for m=1:length(t)
      grid on
      legend('FT (sp A)','{FT_{red}} (sp B)','{FT_{ox}} (sp C)')
      % Calculation of current repsonse at the electrode surface
-     I(m) = (F*D*(1/dx)*(-CA(2)+CA(1)+CB(2)-CB(1)-CC(2)+CC(1))*Area);
+     I(m) = (F*D*(1/dx)*(4*(-CA(2)+CA(1))+(2*(-CC(2)+CC(1))))*Area);
      pause(0.01)
      
 end
