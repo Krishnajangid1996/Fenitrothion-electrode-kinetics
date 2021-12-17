@@ -8,7 +8,7 @@ tic
 sigma = 5643;               % dimensionless scan rate
 dTheta = 0.194;             % dimensionless potential    
 r1 = 617.39;                % dimensionless rate constant for Step 1
-r2 = 110.01;                % dimensionless rate constant for Step 2
+r2 = 100;                % dimensionless rate constant for Step 2
 
 epsilon = 1E-01;           % Electrode radius (cm)
 D = 6.9E-06;               % Diffusivity (cm^2 sec^-1)
@@ -26,7 +26,7 @@ k02 = (r2*D)/(epsilon);                 %rate constant for Step 2
 %% dimensional solver 
 
 Cba = 1E-06;               %Bulk concentration of FT (mol cm^-3)
-alfa1 = 0.28;              %Cathodic transfer coeff for Step 1
+alfa1 = 0.3;              %Cathodic transfer coeff for Step 1
 alfaP1 = 1-alfa1;
 alfa2 = 0.7;               %Cathodic transfer coeff for Step 2                
 alfaP2 = 1-alfa2;           
@@ -35,7 +35,7 @@ Area = 0.0706;             %Electode area (cm^2)
 EL = -0.8;                 %Voltametry starting voltage
 ER = 0.5;                  %Voltametry ending voltage
 EM = -0.2;
-Ef01 = -0.675;             %Formal electrode potential for Step 1
+Ef01 = -0.625;             %Formal electrode potential for Step 1
 Ef02 = 0;                  %Formal electrode potential for Step 2
 
 tmax = 2*(abs(EL-ER)/v);   %Maximum duration of simulation (s)
