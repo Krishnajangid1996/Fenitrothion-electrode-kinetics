@@ -8,7 +8,7 @@ tic
 sigma = 5643;              % dimensionless scan rate
 dTheta = 0.194;            % dimensionless potential
 r1 = 950;               % dimensionless rate constant for Step 1
-r2 = 170;               % dimensionless rate constant for Step 2
+r2 = 120;               % dimensionless rate constant for Step 2
 
 epsilon = 1E-01;           % Electrode radius (cm)
 D = 6.9E-06;               % Diffusivity (cm^2 sec^-1)
@@ -19,24 +19,25 @@ T = 298;                   % Standard temperature (K)
 v = (sigma*R*T*D)/(epsilon^2 * F);      %scan rate (V s^-1)
 dE = (dTheta*R*T)/F;                    %Potential (V)
 
-k01 = (r1*D)/(epsilon^2);               %rate constant for Step 1
-k02 = (r2*D)/(epsilon);                 %rate constant for Step 2
+k01 = (r1*D)/(epsilon^2);               %Apparent rate constant for Step A
+k02 = (r2*D)/(epsilon);                 %Apparent rate constant for Step B
 
 
 %% dimensional solver
 
 Cba = 1E-06;              %Bulk concentration of FT (mol cm^-3)
-alfa1 = 0.95;              %Cathodic transfer coeff for Step 1
+alfa1 = 0.95;              %Cathodic transfer coeff for Step A
 alfaP1 = 1-alfa1;
-alfa2 = 0.7;              %Cathodic transfer coeff for Step 2
+alfa2 = 0.775;              %Cathodic transfer coeff for Step B
 alfaP2 = 1-alfa2;        
 Area = 1;                 %Electode area (cm^2)   
 
 EL = -0.8;                %Voltametry starting voltage
 ER = 0.5;                 %Voltametry ending voltage
 EM = -0.2;
-Ef01 = -0.635;            %Formal electrode potential for Step 1
-Ef02 = 0.0;               %Formal electrode potential for Step 2
+Ef01 = -0.61;            %Formal electrode potential for Step A
+E0rds = 0.005;            %Formal potential for second electron trasnfer of step B 
+E0nonrds = 0.001;         %Formal potential for first electron trasnfer of step B 
 
 tmax = 2*(abs(EL-ER)/v);  %Maximum duration of simulation (s)
 dt = dE/v;                %Duration of each time step (s)   
@@ -84,7 +85,7 @@ for m=1:length(t)
     MatA(N,N) = aW + aP0;
     
     %for specie B
-    MatB(1,1) = aE + aP0 + k02*exp(((2*alfaP2*F)/(R*T))*(E(m)-Ef02));
+    MatB(1,1) = aE + aP0 + k02*exp((1-alfa2)*((F)/(R*T))*(E(m)-E0rds));
     MatB(1,2) = -aE;
     for i = 2:N-1
     MatB(i,i) = aE + aW + aP0;
@@ -95,7 +96,7 @@ for m=1:length(t)
     MatB(N,N) = aW + aP0;
     
     %for specie C
-    MatC(1,1) = aE + aP0 + k02*exp(-((2*alfa2*F)/(R*T))*(E(m)-Ef02));
+    MatC(1,1) = aE + aP0 + k02*exp(((-F)/(R*T))*(E0rds-E0nonrds))*exp((-(1+alfa2))*(((F)/(R*T))*(E(m)-E0rds)));
     MatC(1,2) = -aE;
     for i = 2:N-1
     MatC(i,i) = aE + aW + aP0;
@@ -114,14 +115,14 @@ for m=1:length(t)
     SourceA(N) = aP0*CA(N);
     
     %for specie B
-   SourceB(1) = aP0*CB(1) + CA(1)*k01*exp(-(((1+alfa1)*F)/(R*T))*(E(m)-Ef01)) + CC(1)*k02*exp(-((2*alfa2*F)/(R*T))*(E(m)-Ef02)); 
+   SourceB(1) = aP0*CB(1) + CA(1)*k01*exp(-(((1+alfa1)*F)/(R*T))*(E(m)-Ef01)) + CC(1)*k02*exp(((-F)/(R*T))*(E0rds-E0nonrds))*exp((-(1+alfa2))*(((F)/(R*T))*(E(m)-E0rds))); 
     for i = 2:N-1
        SourceB(i) = aP0*CB(i);
     end
     SourceB(N) = aP0*CB(N);
      
     %for specie C
-      SourceC(1) = aP0*CC(1) + CB(1)*k02*exp(((2*alfaP2*F)/(R*T))*(E(m)-Ef02)); 
+      SourceC(1) = aP0*CC(1) + CB(1)*k02*exp((1-alfa2)*((F)/(R*T))*(E(m)-E0rds)); 
      for i = 2:N-1
         SourceC(i) = aP0*CC(i);
      end
