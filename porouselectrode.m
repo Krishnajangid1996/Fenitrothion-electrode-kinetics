@@ -7,8 +7,8 @@ tic
 
 sigma = 5643;              % dimensionless scan rate
 dTheta = 0.194;            % dimensionless potential
-r1 = 950;               % dimensionless rate constant for Step 1
-r2 = 120;               % dimensionless rate constant for Step 2
+r1 = 950;               % dimensionless rate constant for Step A
+r2 = 120;               % dimensionless rate constant for Step B
 
 epsilon = 1E-01;           % Electrode radius (cm)
 D = 6.9E-06;               % Diffusivity (cm^2 sec^-1)
