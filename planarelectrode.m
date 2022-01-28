@@ -7,8 +7,8 @@ tic
 
 sigma = 5643;               % dimensionless scan rate
 dTheta = 0.194;             % dimensionless potential    
-r1 = 617;                % dimensionless rate constant for Step 1
-r2 = 75;                % dimensionless rate constant for Step 2
+r1 = 617;                % dimensionless rate constant for Step A
+r2 = 75;                % dimensionless rate constant for Step B
 
 epsilon = 1E-01;           % Electrode radius (cm)
 D = 6.9E-06;               % Diffusivity (cm^2 sec^-1)
@@ -26,9 +26,9 @@ k02 = (r2*D)/(epsilon);                 %Apparent rate constant for Step B
 %% dimensional solver 
 
 Cba = 1E-06;               %Bulk concentration of FT (mol cm^-3)
-alfa1 = 0.3;              %Cathodic transfer coeff for Step 1
+alfa1 = 0.3;              %Cathodic transfer coeff for Step A
 alfaP1 = 1-alfa1;
-alfa2 = 0.9;               %Cathodic transfer coeff for Step 2                
+alfa2 = 0.9;               %Cathodic transfer coeff for Step B               
 alfaP2 = 1-alfa2;           
 Area = 0.0706;             %Electode area (cm^2)  
 
